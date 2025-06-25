@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class process {
 
@@ -66,7 +67,7 @@ public class process {
             // Datos personales
             String nombrePiloto = validate.validarTexto(scanner,
                     "Ingrese nombre del piloto: ");
-            int edadPiloto = validate.validarEntero(scanner,
+            int edadPiloto = validate.validarEdad(scanner,
                     "Ingrese edad del piloto: ");
             int numeroParticipante = validate.validarNumeroParticipante(scanner,
                     "Ingrese número de participante: ", participantesInfo, totalParticipantes);
@@ -109,6 +110,7 @@ public class process {
 
         } catch(Exception e) {
             System.out.println("Error al registrar participante: " + e.getMessage());
+            errorLog.logError("Error al registrar participante: " + e.getMessage());
         }
     }
 
@@ -154,6 +156,7 @@ public class process {
 
         } catch(Exception e) {
             System.out.println("Error al registrar tiempos: " + e.getMessage());
+            errorLog.logError("Error al registrar tiempos: " + e.getMessage());
         }
     }
 
@@ -185,6 +188,7 @@ public class process {
 
         } catch(Exception e) {
             System.out.println("Error al calcular clasificación: " + e.getMessage());
+            errorLog.logError("Error al calcular clasificacion: " + e.getMessage());
         }
     }
 
@@ -232,6 +236,7 @@ public class process {
 
         } catch(Exception e) {
             System.out.println("Error al guardar archivo: " + e.getMessage());
+            errorLog.logError("Error al guardar archivo: " + e.getMessage());
         }
     }
 

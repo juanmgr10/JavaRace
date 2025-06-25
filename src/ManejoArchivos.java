@@ -80,6 +80,7 @@ public class ManejoArchivos {
                     escritor.close();
                 } catch (IOException e) {
                     System.err.println("Error al cerrar el escritor: " + e.getMessage());
+                    errorLog.logError("Error al cerrar el escritor: " + e.getMessage());
                 }
             }
             if (archivo != null) {
@@ -87,6 +88,7 @@ public class ManejoArchivos {
                     archivo.close();
                 } catch (IOException e) {
                     System.err.println("Error al cerrar el archivo: " + e.getMessage());
+                    errorLog.logError("Error al cerrar el archivo: " + e.getMessage());
                 }
             }
         }

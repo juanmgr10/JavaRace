@@ -51,6 +51,40 @@ public class validate {
 
             } catch(NumberFormatException e) {
                 System.out.println("Error: Debe ingresar un número entero válido.");
+                errorLog.logError("Error al ingresar numero valido: " + e.getMessage());
+
+            }
+        }
+
+        return numero;
+    }
+    public static int validarEdad(Scanner scanner, String mensaje) {
+        int numero = 0;
+        boolean valido = false;
+
+        while(!valido) {
+            System.out.print(mensaje);
+            try {
+                String entrada = scanner.nextLine().trim();
+
+                if(entrada.isEmpty()) {
+                    System.out.println("Error: Debe ingresar un número.");
+                    continue;
+                }
+
+                numero = Integer.parseInt(entrada);
+
+                if(numero < 16) {
+                    System.out.println("Error: la edad debe ser mayor ded 16 años.");
+                    continue;
+                }
+
+                valido = true;
+
+            } catch(NumberFormatException e) {
+                System.out.println("Error: Debe ingresar un número entero válido.");
+                errorLog.logError("Error al ingresar numero valido: " + e.getMessage());
+
             }
         }
 
@@ -87,6 +121,7 @@ public class validate {
 
             } catch(NumberFormatException e) {
                 System.out.println("Error: Debe ingresar un número decimal válido.");
+                errorLog.logError("Error: Debe ingresar un número decimal válido." + e.getMessage());
             }
         }
 
@@ -101,8 +136,8 @@ public class validate {
         while(!valido) {
             numero = validarEntero(scanner, mensaje);
 
-            if(numero <= 0 || numero > 999) {
-                System.out.println("Error: El número debe estar entre 1 y 999.");
+            if(numero <= 0 || numero > 25) {
+                System.out.println("Error: El número debe estar entre 1 y 25.");
                 continue;
             }
 
@@ -124,7 +159,7 @@ public class validate {
         while(!valido) {
             año = validarEntero(scanner, mensaje);
 
-            if(año < 1900 || año > 2024) {
+            if(año < 1950 || año > 2024) {
                 System.out.println("Error: El año debe estar entre 1900 y 2024.");
                 continue;
             }
