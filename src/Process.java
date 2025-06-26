@@ -61,7 +61,7 @@ public class Process {
 
         try {
             // datos personales
-            String nombrePiloto = Validate.validarTexto(scanner,
+            String nombrePiloto = Validate.validarNombre(scanner,
                     "Ingrese nombre del piloto: ");
             int edadPiloto = Validate.validarEdad(scanner,
                     "Ingrese edad del piloto: ");

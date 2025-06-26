@@ -74,8 +74,12 @@ public class Validate {
 
                 numero = Integer.parseInt(entrada);
 
-                if(numero < 16) {
-                    System.out.println("Error: la edad debe ser mayor ded 16 años.");
+                if(numero < 16 ) {
+                    System.out.println("Error: la edad debe ser mayor de 16 años.");
+                    continue;
+                }
+                if(numero > 80 ) {
+                    System.out.println("Error: la edad debe ser menor de 80 años.");
                     continue;
                 }
 
@@ -199,5 +203,32 @@ public class Validate {
     public static boolean validarStringNoVacio(String texto) {
         return texto != null && !texto.trim().isEmpty();
     }
+    public static String validarNombre(Scanner scanner, String mensaje) {
+        String texto = "";
+        boolean valido = false;
 
+        while(!valido) {
+            System.out.print(mensaje);
+            texto = scanner.nextLine().trim();
+
+            if(texto.isEmpty()) {
+                System.out.println("Error: El texto no puede estar vacío.");
+                continue;
+            }
+
+            if(texto.matches(".\\d.")) {  // Verifica si hay algún dígito en el texto
+                System.out.println("Error: El texto no puede contener números.");
+                continue;
+            }
+
+            if(!esTextoValido(texto)) {
+                System.out.println("Error: El texto contiene caracteres inválidos.");
+                continue;
+            }
+
+            valido = true;
+        }
+
+        return texto;
+    }
 }
