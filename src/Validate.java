@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class validate {
+public class Validate {
 
     public static String validarTexto(Scanner scanner, String mensaje) {
         String texto = "";
@@ -112,7 +112,7 @@ public class validate {
                     continue;
                 }
 
-                if(tiempo > 3600) { // Máximo 1 hora por vuelta
+                if(tiempo > 3600) {
                     System.out.println("Error: Tiempo demasiado alto (máximo 3600 segundos).");
                     continue;
                 }
@@ -170,9 +170,7 @@ public class validate {
         return año;
     }
 
-    // Métodos auxiliares de validación
     private static boolean esTextoValido(String texto) {
-        // Validar que solo contenga letras, números, espacios y algunos caracteres especiales
         return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\\s.,\\-$]+");
     }
 
@@ -184,7 +182,7 @@ public class validate {
                     return true;
                 }
             } catch(NumberFormatException e) {
-                // Ignorar errores de conversión
+
             }
         }
         return false;

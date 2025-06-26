@@ -5,16 +5,14 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Java Race Timer ");
-        process sistema = new process();
+        Process sistema = new Process();
         mostrarMenuPrincipal();
-
-
 
         Scanner scanner = new Scanner(System.in);
 
         int opcion = -1;
         while(opcion != 0) {
-            opcion = validate.validarEntero(scanner, "Seleccione una opción: ");
+            opcion = Validate.validarEntero(scanner, "Seleccione una opción: ");
 
             switch(opcion) {
                 case 1:
@@ -27,9 +25,6 @@ public class Main {
                     sistema.calcularClasificacion();
                     break;
                 case 4:
-                    sistema.mostrarResultados(scanner);
-                    break;
-                case 5:
                     sistema.guardarEnArchivo();
                     break;
                 case 0:
@@ -54,8 +49,7 @@ public class Main {
         System.out.println("1. Registrar Participante");
         System.out.println("2. Registrar Tiempo de Carrera");
         System.out.println("3. Calcular Clasificación Final");
-        System.out.println("4. Mostrar Resultados");
-        System.out.println("5. Guardar Datos en Archivo");
+        System.out.println("4. Guardar Datos en Archivo");
         System.out.println("0. Salir del Sistema");
         System.out.println("=".repeat(50));
     }

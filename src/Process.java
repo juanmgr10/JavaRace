@@ -1,30 +1,26 @@
 import java.util.Scanner;
-import java.util.logging.Logger;
 
-public class process {
+public class Process {
 
-    // Arreglo tridimensional: [participante][categoria][datos]
-    // categoria: 0=datosPersonales, 1=datosVehiculo, 2=patrocinador
-    // datos: 0=nombre/marca, 1=edad/modelo, 2=numero/año
+    // arreglo tridimensional: [participante][categoria][datos]
     private String[][][] participantesInfo;
 
-    // Arreglo bidimensional: [participante][tiempos]
-    // tiempos: 0=vuelta1, 1=vuelta2, 2=vuelta3, 3=tiempoTotal
+    // arreglo bidimensional: [participante][tiempos]
     private double[][] tiemposCarrera;
 
-    // Arreglos auxiliares para clasificación
+    // arreglos para clasificación
     private int[] posicionesFinales;
     private boolean[] participanteActivo;
 
     private int totalParticipantes;
     private final int MAX_PARTICIPANTES = 50;
 
-    public process() {
+    public Process() {
         inicializarArreglos();
     }
 
     private void inicializarArreglos() {
-        // Inicialización del arreglo tridimensional
+        // inicialización arr tri
         participantesInfo = new String[MAX_PARTICIPANTES][3][3];
         for(int i = 0; i < MAX_PARTICIPANTES; i++) {
             for(int j = 0; j < 3; j++) {
@@ -34,7 +30,7 @@ public class process {
             }
         }
 
-        // Inicialización del arreglo bidimensional
+        // inicialización arr bi
         tiemposCarrera = new double[MAX_PARTICIPANTES][4];
         for(int i = 0; i < MAX_PARTICIPANTES; i++) {
             for(int j = 0; j < 4; j++) {
@@ -42,7 +38,7 @@ public class process {
             }
         }
 
-        // Inicialización de arreglos auxiliares
+        // inicializacion arr clasificacion
         posicionesFinales = new int[MAX_PARTICIPANTES];
         participanteActivo = new boolean[MAX_PARTICIPANTES];
 
@@ -64,43 +60,36 @@ public class process {
         }
 
         try {
-            // Datos personales
-            String nombrePiloto = validate.validarTexto(scanner,
+            // datos personales
+            String nombrePiloto = Validate.validarTexto(scanner,
                     "Ingrese nombre del piloto: ");
-            int edadPiloto = validate.validarEdad(scanner,
+            int edadPiloto = Validate.validarEdad(scanner,
                     "Ingrese edad del piloto: ");
-            int numeroParticipante = validate.validarNumeroParticipante(scanner,
+            int numeroParticipante = Validate.validarNumeroParticipante(scanner,
                     "Ingrese número de participante: ", participantesInfo, totalParticipantes);
 
-            // Datos del vehículo
-            String marcaVehiculo = validate.validarTexto(scanner,
+            // datos del vehículo
+            String marcaVehiculo = Validate.validarTexto(scanner,
                     "Ingrese marca del vehículo: ");
-            String modeloVehiculo = validate.validarTexto(scanner,
-                    "Ingrese modelo del vehículo: ");
-            int añoVehiculo = validate.validarAño(scanner,
+            int añoVehiculo = Validate.validarAño(scanner,
                     "Ingrese año del vehículo: ");
 
-            // Datos del patrocinador
-            String nombrePatrocinador = validate.validarTexto(scanner,
+            // datos del patrocinador
+            String nombrePatrocinador = Validate.validarTexto(scanner,
                     "Ingrese nombre del patrocinador: ");
 
-            // Guardar en arreglo tridimensional
             int indice = totalParticipantes;
 
-            // Categoría 0: Datos personales
             participantesInfo[indice][0][0] = nombrePiloto;
             participantesInfo[indice][0][1] = String.valueOf(edadPiloto);
             participantesInfo[indice][0][2] = String.valueOf(numeroParticipante);
 
-            // Categoría 1: Datos del vehículo
             participantesInfo[indice][1][0] = marcaVehiculo;
-            participantesInfo[indice][1][1] = modeloVehiculo;
-            participantesInfo[indice][1][2] = String.valueOf(añoVehiculo);
+            participantesInfo[indice][1][1] = String.valueOf(añoVehiculo);
 
-            // Categoría 2: Datos del patrocinador
             participantesInfo[indice][2][0] = nombrePatrocinador;
-            participantesInfo[indice][2][1] = ""; // Campo vacío
-            participantesInfo[indice][2][2] = ""; // Campo vacío
+            participantesInfo[indice][2][1] = "";
+            participantesInfo[indice][2][2] = "";
 
             participanteActivo[indice] = true;
             totalParticipantes++;
@@ -124,7 +113,7 @@ public class process {
 
         mostrarParticipantesDisponibles();
 
-        int numeroParticipante = validate.validarEntero(scanner,
+        int numeroParticipante = Validate.validarEntero(scanner,
                 "Ingrese número de participante: ");
 
         int indiceParticipante = buscarParticipantePorNumero(numeroParticipante);
@@ -138,14 +127,13 @@ public class process {
             System.out.println("Registrando tiempos para: " +
                     participantesInfo[indiceParticipante][0][0]);
 
-            double vuelta1 = validate.validarTiempo(scanner, "Tiempo vuelta 1 (segundos): ");
-            double vuelta2 = validate.validarTiempo(scanner, "Tiempo vuelta 2 (segundos): ");
-            double vuelta3 = validate.validarTiempo(scanner, "Tiempo vuelta 3 (segundos): ");
+            double vuelta1 = Validate.validarTiempo(scanner, "Tiempo vuelta 1 (segundos): ");
+            double vuelta2 = Validate.validarTiempo(scanner, "Tiempo vuelta 2 (segundos): ");
+            double vuelta3 = Validate.validarTiempo(scanner, "Tiempo vuelta 3 (segundos): ");
 
-            // Calcular tiempo total
+            // calculo tiempo total
             double tiempoTotal = Calculos.calcularTiempoTotal(vuelta1, vuelta2, vuelta3);
 
-            // Guardar en arreglo bidimensional
             tiemposCarrera[indiceParticipante][0] = vuelta1;
             tiemposCarrera[indiceParticipante][1] = vuelta2;
             tiemposCarrera[indiceParticipante][2] = vuelta3;
@@ -169,16 +157,13 @@ public class process {
         }
 
         try {
-            // Crear arreglo de índices para ordenamiento
             int[] indices = new int[totalParticipantes];
             for(int i = 0; i < totalParticipantes; i++) {
                 indices[i] = i;
             }
 
-            // Ordenar por tiempo total usando algoritmo burbuja
             Calculos.ordenarPorTiempo(indices, tiemposCarrera, totalParticipantes);
 
-            // Asignar posiciones finales
             for(int i = 0; i < totalParticipantes; i++) {
                 posicionesFinales[indices[i]] = i + 1;
             }
@@ -189,35 +174,6 @@ public class process {
         } catch(Exception e) {
             System.out.println("Error al calcular clasificación: " + e.getMessage());
             errorLog.logError("Error al calcular clasificacion: " + e.getMessage());
-        }
-    }
-
-    public void mostrarResultados(Scanner scanner) {
-        System.out.println("\n=== MOSTRAR RESULTADOS ===");
-
-        if(totalParticipantes == 0) {
-            System.out.println("No hay datos para mostrar.");
-            return;
-        }
-
-        System.out.println("1. Mostrar todos los participantes");
-        System.out.println("2. Mostrar clasificación final");
-        System.out.println("3. Mostrar por patrocinador");
-
-        int opcion = validate.validarEntero(scanner, "Seleccione opción: ");
-
-        switch(opcion) {
-            case 1:
-                mostrarTodosLosParticipantes();
-                break;
-            case 2:
-                mostrarClasificacionFinal();
-                break;
-            case 3:
-                mostrarPorPatrocinador(scanner);
-                break;
-            default:
-                System.out.println("Opción inválida.");
         }
     }
 
@@ -240,8 +196,6 @@ public class process {
         }
     }
 
-
-    // Métodos auxiliares
     private void mostrarResumenParticipante(int indice) {
         System.out.println("\n--- RESUMEN DEL PARTICIPANTE ---");
         System.out.println("Piloto: " + participantesInfo[indice][0][0]);
@@ -312,7 +266,7 @@ public class process {
     }
 
     private void mostrarPorPatrocinador(Scanner scanner) {
-        String patrocinador = validate.validarTexto(scanner,
+        String patrocinador = Validate.validarTexto(scanner,
                 "Ingrese nombre del patrocinador: ");
 
         System.out.println("\n=== PARTICIPANTES DE " + patrocinador.toUpperCase() + " ===");

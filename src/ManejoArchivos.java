@@ -1,10 +1,11 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ManejoArchivos {
-    private static final String NOMBRE_ARCHIVO = "datos_carrera.txt";
-    private static final String SEPARADOR = "|";
+    private static final String NOMBRE_ARCHIVO = "resultados_carrera.txt";
 
     public static void guardarDatos(String[][][] participantes, double[][] tiempos,
                                     int[] posiciones, int totalParticipantes) throws IOException {
@@ -17,62 +18,47 @@ public class ManejoArchivos {
         BufferedWriter escritor = null;
 
         try {
-            archivo = new FileWriter(NOMBRE_ARCHIVO);
+            String nombreArchivo = generarNombreArchivo();
+            archivo = new FileWriter(nombreArchivo);
             escritor = new BufferedWriter(archivo);
-
-            // Escribir encabezado
-            escritor.write("DATOS_SISTEMA_CARRERAS");
+            escritor.write("                   |             Inicio del programa                 |");
             escritor.newLine();
-            escritor.write("TOTAL_PARTICIPANTES:" + totalParticipantes);
-            escritor.newLine();
-            escritor.write("FECHA_GUARDADO:" + java.time.LocalDateTime.now());
-            escritor.newLine();
-            escritor.write("---INICIO_DATOS---");
+            escritor.write("Posición           |              Piloto/Tiempo/Estado                    |    Vehículo/Patrocinador");
             escritor.newLine();
 
-            // Guardar datos de cada participante
-            for (int i = 0; i < totalParticipantes; i++) {
-                // Datos del participante (arreglo 3D)
-                StringBuilder lineaParticipante = new StringBuilder();
-                lineaParticipante.append("PARTICIPANTE:").append(i);
-
-                // Datos personales
-                lineaParticipante.append(SEPARADOR).append("PERSONAL:");
-                for (int j = 0; j < 3; j++) {
-                    lineaParticipante.append(participantes[i][0][j]);
-                    if (j < 2) lineaParticipante.append(",");
+            int[] indicesOrdenados = new int[totalParticipantes];
+            for(int i = 0; i < totalParticipantes; i++) {
+                for(int j = 0; j < totalParticipantes; j++) {
+                    if(posiciones[j] == i + 1) {
+                        indicesOrdenados[i] = j;
+                        break;
+                    }
                 }
-
-                // Datos del vehículo
-                lineaParticipante.append(SEPARADOR).append("VEHICULO:");
-                for (int j = 0; j < 3; j++) {
-                    lineaParticipante.append(participantes[i][1][j]);
-                    if (j < 2) lineaParticipante.append(",");
-                }
-
-                // Datos del patrocinador
-                lineaParticipante.append(SEPARADOR).append("PATROCINADOR:");
-                for (int j = 0; j < 3; j++) {
-                    lineaParticipante.append(participantes[i][2][j]);
-                    if (j < 2) lineaParticipante.append(",");
-                }
-
-                // Tiempos (arreglo 2D)
-                lineaParticipante.append(SEPARADOR).append("TIEMPOS:");
-                for (int j = 0; j < 4; j++) {
-                    lineaParticipante.append(tiempos[i][j]);
-                    if (j < 3) lineaParticipante.append(",");
-                }
-
-                // Posición final
-                lineaParticipante.append(SEPARADOR).append("POSICION:").append(posiciones[i]);
-
-                escritor.write(lineaParticipante.toString());
-                escritor.newLine();
             }
 
-            escritor.write("---FIN_DATOS---");
+            for(int i = 0; i < totalParticipantes; i++) {
+                int idx = indicesOrdenados[i];
+
+                if(tiempos[idx][3] > 0) {
+                    String posicion = String.format("%dº lugar        ", posiciones[idx]);
+                    String piloto = participantes[idx][0][0];
+                    double tiempoTotal = tiempos[idx][3];
+                    String estado = (tiempoTotal < 180.0) ? "Excelente" : (tiempoTotal < 240.0) ? "Bueno" : "Regular";
+                    String vehiculo = participantes[idx][1][0];
+                    String patrocinador = participantes[idx][2][0];
+
+                    String linea = String.format("%s      %10s/%.2f/%s     >>%10s/%s",
+                            posicion, piloto, tiempoTotal, estado, vehiculo, patrocinador);
+
+                    escritor.write(linea);
+                    escritor.newLine();
+                }
+            }
+
+            escritor.write("                   |             Fin del programa                 |");
             escritor.newLine();
+
+            System.out.println("Archivo guardado como: " + nombreArchivo);
 
         } finally {
             if (escritor != null) {
@@ -92,5 +78,14 @@ public class ManejoArchivos {
                 }
             }
         }
+    }
+
+    private static String generarNombreArchivo() {
+        LocalDateTime fechaActual = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH_mm_ss.SSSSSS");
+        int numeroSerial = (int) (Math.random() * 100) + 1;
+
+        return String.format("resultadosCarrera_%s_Serial%d.txt",
+                fechaActual.format(formatter), numeroSerial);
     }
 }

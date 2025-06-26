@@ -21,21 +21,16 @@ public class Calculos {
             throw new IllegalArgumentException("Los arreglos no pueden ser nulos");
         }
 
-        // Algoritmo de ordenamiento burbuja mejorado
         for(int i = 0; i < totalParticipantes - 1; i++) {
             boolean intercambio = false;
 
             for(int j = 0; j < totalParticipantes - 1 - i; j++) {
-                // Comparar tiempos totales (columna 3)
                 double tiempo1 = tiempos[indices[j]][3];
                 double tiempo2 = tiempos[indices[j + 1]][3];
 
-                // Si el tiempo es 0, se considera como el peor tiempo
                 if(tiempo1 == 0.0) tiempo1 = Double.MAX_VALUE;
                 if(tiempo2 == 0.0) tiempo2 = Double.MAX_VALUE;
-
                 if(tiempo1 > tiempo2) {
-                    // Intercambiar índices
                     int temp = indices[j];
                     indices[j] = indices[j + 1];
                     indices[j + 1] = temp;
@@ -43,7 +38,6 @@ public class Calculos {
                 }
             }
 
-            // Si no hubo intercambios, el arreglo ya está ordenado
             if(!intercambio) {
                 break;
             }
